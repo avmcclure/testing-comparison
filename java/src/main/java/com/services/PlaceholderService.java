@@ -14,7 +14,7 @@ public class PlaceholderService {
     }
 
     public PhotoResponse[] getPhotosByAlbum(int albumId) {
-        restTemplate.getForEntity(String.format(placeholderUrl, albumId), PhotoResponse[].class);
-        return null;
+        var response = restTemplate.getForEntity(String.format(placeholderUrl, albumId), PhotoResponse[].class);
+        return response.getBody();
     }
 }
