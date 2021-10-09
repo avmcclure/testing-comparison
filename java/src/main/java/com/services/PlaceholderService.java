@@ -1,6 +1,7 @@
 package com.services;
 
 import com.models.PhotoResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class PlaceholderService {
@@ -14,7 +15,8 @@ public class PlaceholderService {
     }
 
     public PhotoResponse[] getPhotosByAlbum(int albumId) {
-        restTemplate.getForEntity(String.format(placeholderUrl, albumId), PhotoResponse[].class);
-        return null;
+        String albumUrl = String.format(placeholderUrl, albumId);
+        var response = restTemplate.getForEntity(albumUrl, PhotoResponse[].class);
+        return response.getBody();
     }
 }
