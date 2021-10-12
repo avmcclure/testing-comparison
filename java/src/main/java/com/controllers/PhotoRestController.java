@@ -1,12 +1,23 @@
 package com.controllers;
 
 import com.models.PhotoResponse;
+import com.services.PlaceholderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class PhotoRestController {
+
+    private PlaceholderService placeholderService;
+
+    @Autowired
+    public PhotoRestController(PlaceholderService placeholderService) {
+        this.placeholderService = placeholderService;
+    }
 
     @GetMapping("/healthCheck")
     public String getHealth() {
@@ -14,8 +25,7 @@ public class PhotoRestController {
     }
 
     @GetMapping("/album/{albumId}/photos")
-    public PhotoResponse getPhotoAlbum(@PathVariable String albumId) {
-        System.out.println("Album Id: " + albumId);
-        return new PhotoResponse();
+    public List<PhotoResponse> getPhotoAlbum(@PathVariable int albumId) {
+        return placeholderService.getPhotosByAlbum(albumId);
     }
 }
