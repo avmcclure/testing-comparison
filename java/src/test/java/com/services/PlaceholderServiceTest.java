@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,14 +38,23 @@ public class PlaceholderServiceTest {
 
     @Test
     public void getPhotosByAlbum_ShouldReturnResponseFromApiCall() {
-        var response = new PhotoResponse();
-        var collection = List.of(response);
+        var collection = List.of(new PhotoResponse());
         var entity = new ResponseEntity<>(collection, HttpStatus.OK);
 
         when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(entity);
         var actual = service.getPhotosByAlbum(albumId);
 
         assertEquals(collection, actual);
+    }
+
+    @Test
+    public void getPhotosByAlbum_ShouldReturnReturnEmptyList() {
+        ResponseEntity<List<PhotoResponse>> entity = new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+
+        when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(entity);
+        var actual = service.getPhotosByAlbum(albumId);
+
+        assertEquals(Collections.emptyList(), actual);
     }
 
 }
