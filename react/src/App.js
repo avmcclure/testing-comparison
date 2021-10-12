@@ -1,10 +1,10 @@
-import './App.css';
-import {PhotoAlbum} from "./PhotoAlbum";
+import "./App.css";
+import { PhotoAlbum } from "./PhotoAlbum";
 
 function App() {
     return (
         <div className="App">
-            <PhotoAlbum/>
+            <PhotoAlbum />
         </div>
     );
 }
