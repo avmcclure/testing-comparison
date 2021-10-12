@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class PhotoRestController {
 
-    private PlaceholderService placeholderService;
+    private final PlaceholderService placeholderService;
 
     @Autowired
     public PhotoRestController(PlaceholderService placeholderService) {
