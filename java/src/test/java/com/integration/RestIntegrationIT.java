@@ -11,9 +11,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -50,5 +50,13 @@ public class RestIntegrationIT {
         var actual = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
 
         assertEquals(50, actual.getBody().size());
+    }
+
+    @Test(expected = HttpClientErrorException.class)
+    public void getPhotoAlbum_ShouldReturnValidationErroWhenAlbumIdZero() {
+        var albumId = 0;
+        var url = String.format("http://localhost:%d/album/%d/photos", port, albumId);
+
+        restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
 }

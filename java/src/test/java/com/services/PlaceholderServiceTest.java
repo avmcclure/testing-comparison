@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +56,11 @@ public class PlaceholderServiceTest {
         var actual = service.getPhotosByAlbum(albumId);
 
         assertEquals(Collections.emptyList(), actual);
+    }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getPhotosByAlbum_ShouldReturnRaiseBadRequestWhenAlbumIdZero() {
+        service.getPhotosByAlbum(0);
     }
 
 }
