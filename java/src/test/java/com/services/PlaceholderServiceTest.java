@@ -63,4 +63,8 @@ public class PlaceholderServiceTest {
         service.getPhotosByAlbum(0);
     }
 
+    @Test(expected = ResponseStatusException.class)
+    public void getPhotosByAlbum_ShouldReturnRaiseBadRequestWhenAlbumIdOverOneHundred() {
+        service.getPhotosByAlbum(101);
+    }
 }

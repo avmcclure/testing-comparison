@@ -25,7 +25,7 @@ public class PlaceholderService {
     }
 
     public List<PhotoResponse> getPhotosByAlbum(int albumId) {
-        if (albumId == 0)
+        if (albumId == 0 || albumId > 100)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid albumId");
         String albumUrl = String.format(placeholderUrl, albumId);
         var response = restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});

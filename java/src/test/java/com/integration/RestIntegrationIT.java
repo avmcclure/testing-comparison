@@ -59,4 +59,12 @@ public class RestIntegrationIT {
 
         restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
+
+    @Test(expected = HttpClientErrorException.class)
+    public void getPhotoAlbum_ShouldReturnValidationErroWhenAlbumIdOverOneHundred() {
+        var albumId = 101;
+        var url = String.format("http://localhost:%d/album/%d/photos", port, albumId);
+
+        restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
+    }
 }
