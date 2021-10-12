@@ -3,11 +3,15 @@ package com.services;
 import com.models.PhotoResponse;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertArrayEquals;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class PlaceholderServiceTest {
@@ -24,23 +28,23 @@ public class PlaceholderServiceTest {
 
     @Test
     public void getPhotosByAlbum_ShouldMakeCallToRestTemplate() {
-        PhotoResponse[] photoResponses = {new PhotoResponse()};
-        ResponseEntity<PhotoResponse[]> response = new ResponseEntity<>(photoResponses, HttpStatus.OK);
-        when(restTemplate.getForEntity(String.format(url, albumId), PhotoResponse[].class)).thenReturn(response);
+        var photoResponses = List.of(new PhotoResponse());
+        var response = new ResponseEntity<>(photoResponses, HttpStatus.OK);
+        when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(response);
         service.getPhotosByAlbum(albumId);
-        verify(restTemplate).getForEntity(String.format(url, albumId), PhotoResponse[].class);
+        verify(restTemplate).exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
 
     @Test
     public void getPhotosByAlbum_ShouldReturnResponseFromApiCall() {
         var response = new PhotoResponse();
-        PhotoResponse[] collection = new PhotoResponse[]{response};
+        var collection = List.of(response);
         var entity = new ResponseEntity<>(collection, HttpStatus.OK);
 
-        when(restTemplate.getForEntity(String.format(url, albumId), PhotoResponse[].class)).thenReturn(entity);
+        when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(entity);
         var actual = service.getPhotosByAlbum(albumId);
 
-        assertArrayEquals(collection, actual);
+        assertEquals(collection, actual);
     }
 
 }
