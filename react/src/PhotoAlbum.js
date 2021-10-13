@@ -1,19 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { SearchInput } from "./SearchInput";
 import { Photos } from "./Photos";
+import { get } from "./common/fetchService";
 
 export function PhotoAlbum() {
     const [photos, setPhotos] = useState([]);
 
-    const fetchPhotos = useCallback(async (searchText) => {
-        try {
-            const photos = await fetch(`https://jsonplaceholder.typicode.com/albums/${searchText}/photos`);
-            const json = await photos.json();
-            setPhotos(json);
-        } catch (e) {
-            console.error("Scott's fault", e);
-        }
-    }, []);
+    const fetchPhotos = async (searchText) => {
+        const photos = await get(`https://jsonplaceholder.typicode.com/albums/${searchText}/photos`);
+        setPhotos(photos);
+    };
 
     return (
         <div>

@@ -4,14 +4,19 @@ export function SearchInput(props) {
     const { search } = props;
     const [searchText, setSearchText] = useState("");
 
-    const handleSearch = (text) => {
-        search(text);
-    };
+    function handleSearchInputOnChange(event) {
+        setSearchText(event.target.value);
+    }
+
+    function handleSearchOnClick() {
+        search(searchText);
+    }
 
     return (
         <>
-            <input value={searchText} onChange={(event) => setSearchText(event.target.value)} />
-            <button onClick={() => handleSearch(searchText)}>Search</button>
+            <label htmlFor="search-input">Search: </label>
+            <input id="search-input" value={searchText} onChange={handleSearchInputOnChange} />
+            <button onClick={handleSearchOnClick}>Search</button>
         </>
     );
 }
