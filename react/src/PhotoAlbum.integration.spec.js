@@ -7,10 +7,12 @@ import { createPhotoResponse } from "./common/objectBuilders";
 jest.mock("./common/fetchService");
 
 describe("PhotoAlbum", () => {
-    it("should return no photos when component loads", () => {
+    beforeEach(() => {
         get.mockResolvedValue([createPhotoResponse(1)]);
         render(<PhotoAlbum />);
+    });
 
+    it("should return no photos when component loads", () => {
         const albumText = screen.queryByText("Album ID: 1");
         expect(albumText).not.toBeInTheDocument();
         const albumImage = screen.queryByAltText("Album ID 1");
@@ -18,9 +20,6 @@ describe("PhotoAlbum", () => {
     });
 
     it("should return photos when typing into search input and search button is clicked", async () => {
-        get.mockResolvedValue([createPhotoResponse(1)]);
-        render(<PhotoAlbum />);
-
         const searchInput = screen.getByLabelText("Search:");
         const searchButton = screen.getByRole("button", {
             name: "Search",
