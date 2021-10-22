@@ -21,10 +21,11 @@ describe("PhotoAlbum", () => {
 
     it("should return photos when typing into search input and search button is clicked", async () => {
         const searchInput = screen.getByLabelText("Search:");
+        userEvent.type(searchInput, "1");
+
         const searchButton = screen.getByRole("button", {
             name: "Search",
         });
-        userEvent.type(searchInput, "1");
         userEvent.click(searchButton);
 
         const albumText = await screen.findByText("Album ID: 1");
