@@ -30,31 +30,36 @@ public class PlaceholderServiceTest {
 
     @Test
     public void getPhotosByAlbum_ShouldMakeCallToRestTemplate() {
+        //arrange
         var photoResponses = List.of(new PhotoResponse());
         var response = new ResponseEntity<>(photoResponses, HttpStatus.OK);
         when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(response);
+        //act
         service.getPhotosByAlbum(albumId);
+        //assert
         verify(restTemplate).exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
 
     @Test
     public void getPhotosByAlbum_ShouldReturnResponseFromApiCall() {
+        //arrange
         var collection = List.of(new PhotoResponse());
         var entity = new ResponseEntity<>(collection, HttpStatus.OK);
-
         when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(entity);
+        //act
         var actual = service.getPhotosByAlbum(albumId);
-
+        //assert
         assertEquals(collection, actual);
     }
 
     @Test
     public void getPhotosByAlbum_ShouldReturnReturnEmptyList() {
+        //arrange
         ResponseEntity<List<PhotoResponse>> entity = new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-
         when(restTemplate.exchange(String.format(url, albumId), HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {})).thenReturn(entity);
+        //act
         var actual = service.getPhotosByAlbum(albumId);
-
+        //assert
         assertEquals(Collections.emptyList(), actual);
     }
 

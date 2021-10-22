@@ -34,37 +34,41 @@ public class RestIntegrationIT {
 
     @Test
     public void getHealth_ShouldReturnSuccessMessage() {
+        //arrange
         var url = String.format("http://localhost:%d/healthCheck", port);
-
+        //act
         var actual = restTemplate.getForEntity(url, String.class);
-
+        //assert
         assertEquals(HttpStatus.OK, actual.getStatusCode());
         assertEquals("Success", actual.getBody());
     }
 
     @Test
     public void getPhotoAlbum_ShouldReturnPhotos() {
+        //arrange
         var albumId = 2;
         var url = String.format("http://localhost:%d/album/%d/photos", port, albumId);
-
+        //act
         var actual = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
-
+        //assert
         assertEquals(50, actual.getBody().size());
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void getPhotoAlbum_ShouldReturnValidationErroWhenAlbumIdZero() {
+        //arrange
         var albumId = 0;
         var url = String.format("http://localhost:%d/album/%d/photos", port, albumId);
-
+        //act
         restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void getPhotoAlbum_ShouldReturnValidationErroWhenAlbumIdOverOneHundred() {
+        //arrange
         var albumId = 101;
         var url = String.format("http://localhost:%d/album/%d/photos", port, albumId);
-
+        //act
         restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<PhotoResponse>>() {});
     }
 }
